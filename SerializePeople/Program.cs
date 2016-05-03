@@ -39,10 +39,29 @@ namespace SerializePeople
 			fs.Close();
 		}
 
+		static Person Deserialize()
+		{
+			Person person = new Person();
+			FileStream fs = new FileStream("Person.dat", FileMode.Open);
+			BinaryFormatter bf = new BinaryFormatter();
+
+			person = (Person)bf.Deserialize(fs);
+			fs.Close();
+
+			return person;
+		}
+
 		static void Main(string[] args)
 		{
 			Person me = new Person("Adam", 25, 1234567890);
 			Serialize(me);
+			Console.WriteLine("I'm serialized");
+
+			Person myPerson = Deserialize();
+			Console.WriteLine("I'm deserialized");
+
+			Console.WriteLine("Name: {0}, Age: {1}, ID: {2}", myPerson.Name, myPerson.Age, myPerson.ID);
+			Console.ReadLine();
 		}
 	}
 }
