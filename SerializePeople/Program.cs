@@ -10,11 +10,20 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace SerializePeople
 {
 	[Serializable]
-	public class Person
+	public class Person: IDeserializationCallback
 	{
 		public string Name { get; set; }
-		public int Age { get; set; }
+		[NonSerialized] public int age;
 		public double ID { get; set; }
+
+		public int GetAge()
+		{
+			return age;
+		}
+
+		public void OnDeserialization(object sender)
+		{
+		}
 
 		public Person()
 		{
@@ -23,7 +32,7 @@ namespace SerializePeople
 		public Person(string name, int age, double id)
 		{
 			Name = name;
-			Age = age;
+			this.age = age;
 			ID = id;
 		}
 
@@ -60,7 +69,7 @@ namespace SerializePeople
 			Person myPerson = Deserialize();
 			Console.WriteLine("I'm deserialized");
 
-			Console.WriteLine("Name: {0}, Age: {1}, ID: {2}", myPerson.Name, myPerson.Age, myPerson.ID);
+			Console.WriteLine("Name: {0}, Age: {1}, ID: {2}", myPerson.Name, myPerson.GetAge(), myPerson.ID);
 			Console.ReadLine();
 		}
 	}
